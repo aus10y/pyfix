@@ -34,6 +34,7 @@ class APIserver(asyncio.Protocol):
         
         self.commands = {}
         self.commands['FIX_connect'] = self.FIX_connect
+        self.commands['FIX_disconnect'] = self.FIX_disconnect
         self.commands['FIX'] = None
         
     
@@ -122,7 +123,7 @@ class APIserver(asyncio.Protocol):
     
     
     @asyncio.coroutine
-    def FIX_connect(self, settings):
+    def FIX_connect(self, settings, *args, **kwargs):
         if settings['SSL']:
             sslcontext = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         else:
@@ -153,6 +154,11 @@ class APIserver(asyncio.Protocol):
             logger.exception(e)
     
     
+    @asyncio.coroutine
+    def FIX_disconnect(self, *args, **kwargs):
+        self.FIX_transport.close()
+        self.FIX_transport = None
+        self.FIX_protocol = None
     
 
 #------------------------------------------------------------------------------

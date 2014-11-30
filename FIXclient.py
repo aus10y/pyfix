@@ -76,7 +76,7 @@ class FIXclient(asyncio.Protocol):
         self._in_put_nowait(None)
         self._out_put_nowait((None, None))
         
-        # Try to reconnect
+        # Try to reconnect if in case of accidental disconnect
         pass
     
     
@@ -262,16 +262,6 @@ class FIXclient(asyncio.Protocol):
         HeartBeat.append(b'49=' + self.SenderCompID + b'\x01')  # SenderCompID
         HeartBeat.append(b'56=' + self.TargetCompID + b'\x01')  # TargetCompID
         HeartBeat.append(b'52=' + compose.SendingTime() + b'\x01')  # SendingTime
-        """
-        HeartBeat = {
-                'BeginString': b'FIX.4.4',
-                'MsgType': b'0',
-                'SenderCompID': self.SenderCompID,
-                'TargetCompID': self.TargetCompID,
-                'MsgSeqNum': self.MsgSeqNum(),
-                'SendingTime': compose.SendingTime()
-                }
-        """
         
         self.put_outgoing(HeartBeat, msg_name='HeartBeat')
     
@@ -286,18 +276,6 @@ class FIXclient(asyncio.Protocol):
         TestReq.append(b'52=' + compose.SendingTime() + b'\x01')  # SendingTime
         TestReq.append(b'112=' + self._sent_TestReqID + b'\x01')  # TestReqID
         
-        """
-        TestReq = {
-                'BeginString': b'FIX.4.4',
-                'MsgType': b'1',
-                'SenderCompID': self.SenderCompID,
-                'TargetCompID': self.TargetCompID,
-                'MsgSeqNum': self.MsgSeqNum(),
-                'SendingTime': compose.SendingTime(),
-                'TestReqID': self._sent_TestReqID
-                }
-        """
-        
         self.put_outgoing(TestReq, msg_name='Test Request')
     
     
@@ -309,17 +287,6 @@ class FIXclient(asyncio.Protocol):
         ResendReq.append(b'56=' + self.TargetCompID + b'\x01')  # TargetCompID
         ResendReq.append(b'7=' + str(self._host_MsgSeqNum + 1).encode('utf-8') + b'\x01')   # BeginSeqNo
         ResendReq.append(b'16=' + EndSeqNo + b'\x01')
-        
-        """
-        ResendReq = {
-                'BeginString': b'FIX.4.4',
-                'MsgType': b'2',
-                'SenderCompID': self.SenderCompID,
-                'TargetCompID': self.TargetCompID,
-                'BeginSeqNo': self._host_MsgSeqNum + 1,
-                'EndSeqNo': EndSeqNo
-                }
-        """
         
         self.put_outgoing(ResendReq, msg_name='Resend Request')
 
