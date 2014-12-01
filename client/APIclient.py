@@ -17,7 +17,7 @@ Don't send BeginString or BodyLength.
 """
 import socket
 
-from __init__ import SOCKET_args, CONNECTION_args
+from .. import SOCKET_args, CONNECTION_args
 
 def init_client():
     #socket.setdefaulttimeout(0)

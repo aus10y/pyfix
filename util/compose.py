@@ -25,13 +25,13 @@ Order for composing the FIX message:
 *Add the CheckSum field to the existing message
 
 """
-from . import SOH, TAGS, MSGS
-
 import time
 import asyncio
 import logging
 import functools
 from datetime import datetime, timedelta
+
+from . import SOH, TAGS, MSGS
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

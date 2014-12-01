@@ -1,4 +1,4 @@
-import __init__
+#import __init__
 
 import ast
 import json
@@ -6,8 +6,8 @@ import asyncio
 import logging
 from datetime import datetime
 
+from util import TAGS, MSGS
 from util import parse, compose
-from util.compose import TAGS, MSGS
 
 #from message import Message
 
@@ -241,7 +241,7 @@ class FIXclient(asyncio.Protocol):
             logger.debug('FIX: Handling outgoing data')
             
             # XXX consider testing for MsgSeqNum so that application can pass it's own
-            #msg_data['MsgSeqNum'] = self.MsgSeqNum()
+            # msg_data['MsgSeqNum'] = self.MsgSeqNum()
             
             try:
                 FIX_message = compose.compile_message(msg_data, self.MsgSeqNum())

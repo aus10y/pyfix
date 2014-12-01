@@ -1,10 +1,9 @@
-from . import SOH, TAGS, MSGS
-
+import time
 import logging
-#import functools
 import asyncio
 from datetime import datetime, timedelta
-import time
+
+from . import SOH, TAGS, MSGS
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

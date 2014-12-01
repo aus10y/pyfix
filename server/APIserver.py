@@ -6,7 +6,7 @@ import logging
 import time
 import ssl
 
-from FIXclient import FIXclient
+from .FIXclient import FIXclient
 #import test
 
 logger = logging.getLogger(__name__)
@@ -156,7 +156,11 @@ class APIserver(asyncio.Protocol):
     
     @asyncio.coroutine
     def FIX_disconnect(self, *args, **kwargs):
-        self.FIX_transport.close()
+        try:
+            self.FIX_transport.close()
+        except AttributeError as e:
+            logger.debug("API: FIX connection already closed")
+        
         self.FIX_transport = None
         self.FIX_protocol = None
     
